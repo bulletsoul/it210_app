@@ -47,7 +47,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'user_type' => 'User Type',
+            'user_type' => 'User Type (0 for admin/instructor, 1 for student)',
             'username' => 'Username',
             'password' => 'Password',
             'student_no' => 'Student No.',
@@ -88,6 +88,23 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username]);
+    }
+    
+    /**
+     * Finds user by username
+     *
+     * @param  string      $username
+     * @return static|null
+     */
+    public static function findByStudentNo($student_no)
+    {
+        foreach (self::$users as $user) {
+            if (strcasecmp($user['student_no'], $student_no) === 0) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 
     /**

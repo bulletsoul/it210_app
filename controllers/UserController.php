@@ -73,9 +73,13 @@ class UserController extends Controller
             }
         }   
         
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        if($success){
+            return $this->redirect(['index']);
+        } else {            
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -139,5 +143,25 @@ class UserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    
+    
+     /**
+     * Finds the user model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $student_no
+     * @return user the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public static function findByStudentNo($student_no)
+    {
+        /*if (($model = user::findOne($student_no)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }*/
+        $model = user::find()->where(['student_no' => $student_no])->one();
+        return $model;
     }
 }

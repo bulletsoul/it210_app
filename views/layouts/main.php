@@ -39,6 +39,7 @@ AppAsset::register($this);
                     ['label' => 'About', 'url' => ['/site/about']],
                     ['label' => 'Create User', 'url' => ['/user/create']],
                     ['label' => 'Add Student', 'url' => ['/student/create']],
+                    ['label' => 'Add Requirement', 'url' => ['/requirement/create']],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',

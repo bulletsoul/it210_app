@@ -22,6 +22,8 @@ use Yii;
  */
 class Student extends \yii\db\ActiveRecord
 {
+    private $_user = false;
+    
     /**
      * @inheritdoc
      */

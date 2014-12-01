@@ -14,6 +14,8 @@ use yii\filters\VerbFilter;
  */
 class StudentController extends Controller
 {
+    private $_user = false;
+    
     public function behaviors()
     {
         return [
@@ -52,6 +54,16 @@ class StudentController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    
+    
+    public function isUserExisting()
+    {
+        if ($this->_user === false) {            
+            $this->_user = UserController::$this->findByStudentNo($this->student_no);   
+        }
+
+        return $this->_user;
+    }
 
     /**
      * Creates a new student model.
@@ -60,15 +72,27 @@ class StudentController extends Controller
      */
     public function actionCreate()
     {
+        $success = false;
         $model = new student();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->student_no]);
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $userModel = UserController::findByStudentNo($model->student_no);
+            
+            if($userModel!=null){
+                if($model->save()){
+                    $success = true;
+                }
+            }
+        }
+        
+        if($success){
+            return $this->redirect(['view', 'id' => $model->student_no]); 
         } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
         }
+        
     }
 
     /**
